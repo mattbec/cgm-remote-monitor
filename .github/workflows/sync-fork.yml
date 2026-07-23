@@ -1,0 +1,23 @@
+name: Fork synchronisieren
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Läuft täglich um Mitternacht. Beliebig anpassbar.
+  workflow_dispatch: # Ermöglicht den manuellen Start über den "Actions"-Tab.
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Lädt die gesamte Historie für alle Branches
+
+      - name: Sync upstream changes
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.8
+        with:
+          target_sync_branch: master # Name des Branches in Ihrem Fork
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }} # Wird automatisch generiert
+          upstream_sync_branch: master # Name des Branches im Original-Repository
+          upstream_repo: nightscout/cgm-remote-monitor # Ersetzen Sie dies durch "Besitzer/Repository" des Originals
