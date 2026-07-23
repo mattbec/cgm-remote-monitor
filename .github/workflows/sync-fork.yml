@@ -1,9 +1,9 @@
-name: Fork synchronisieren
+name: Fork synchronisieren (Pure Git)
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Läuft täglich um Mitternacht. Beliebig anpassbar.
-  workflow_dispatch: # Ermöglicht den manuellen Start über den "Actions"-Tab.
+    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -12,12 +12,21 @@ jobs:
       - name: Checkout target fork
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Lädt die gesamte Historie für alle Branches
+          fetch-depth: 0 # Wichtig, um die gesamte Git-Historie zu laden
 
-      - name: Sync upstream changes
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.8
-        with:
-          target_sync_branch: master # Name des Branches in Ihrem Fork
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }} # Wird automatisch generiert
-          upstream_sync_branch: master # Name des Branches im Original-Repository
-          upstream_repo: nightscout/cgm-remote-monitor # Ersetzen Sie dies durch "Besitzer/Repository" des Originals
+      - name: Sync upstream
+        run: |
+          # Git Identität für den automatischen Commit setzen
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          # Original-Repository (Upstream) hinzufügen und abrufen
+          git remote add upstream https://github.com/nightscout/cgm-remote-monitor.git # URL des Originals anpassen!
+          git fetch upstream master
+
+          # In den eigenen master wechseln und Änderungen mergen
+          git checkout master
+          git merge upstream/master --ff-only # --ff-only verhindert ungewollte Konflikt-Commits
+
+          # Aktualisierten Stand in Ihren eigenen Fork pushen
+          git push origin master
