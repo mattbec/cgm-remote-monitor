@@ -30,4 +30,5 @@ jobs:
           git rebase upstream/master
 
           # Aktualisierten Stand in Ihren eigenen Fork pushen
+          git pull origin master
           git push origin master
