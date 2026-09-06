@@ -1,4 +1,4 @@
-3name: Fork synchronisieren (Pure Git)
+name: Fork synchronisieren
 
 on:
   schedule:
