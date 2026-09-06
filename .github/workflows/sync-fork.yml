@@ -19,6 +19,7 @@ jobs:
           # Git Identität für den automatischen Commit setzen
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git config pull.ff only       # fast-forward only
 
           # Original-Repository (Upstream) hinzufügen und abrufen
           git remote add upstream https://github.com/nightscout/cgm-remote-monitor.git # URL des Originals anpassen!
