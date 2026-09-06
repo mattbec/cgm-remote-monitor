@@ -26,7 +26,7 @@ jobs:
 
           # In den eigenen master wechseln und Änderungen mergen
           git checkout master
-          git merge upstream/master --ff-only # --ff-only verhindert ungewollte Konflikt-Commits
+          git rebase upstream/master --ff-only # --ff-only verhindert ungewollte Konflikt-Commits
 
           # Aktualisierten Stand in Ihren eigenen Fork pushen
           git push origin master
