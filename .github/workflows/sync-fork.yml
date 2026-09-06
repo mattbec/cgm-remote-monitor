@@ -26,6 +26,7 @@ jobs:
 
           # In den eigenen master wechseln und Änderungen mergen
           git checkout master
+          git pull origin master
           git rebase upstream/master
 
           # Aktualisierten Stand in Ihren eigenen Fork pushen
